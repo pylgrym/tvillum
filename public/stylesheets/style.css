@@ -1,0 +1,44 @@
+body {
+  not-padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: grey;
+}
+
+a {
+  color: #00B7FF;
+}
+
+form.spanny {
+  display: inline-block;
+}
+
+
+
+.unit { zbackground-color: yellow;  padding: 5px;
+}
+
+p::not-first-letter { background-color: lime; color: blue; font-weight: 900; 
+  font-size: 1.5em; 
+}
+
+p { display: inline; 
+  notinline-block; 
+}
+
+.comment { zmargin: 3px; 
+  padding: 3px; 
+  padding-bottom: 6px;
+}
+
+.unit:nth-child(even) .comment { background-color: lightyellow; }
+.unit:nth-child(odd) .comment { background-color: lightgreen; }
+not.unit:nth-child(odd) .comment { background-color: red; }
+
+.author { 
+  background-color: orange; 
+  margin: 3px; 
+  padding: 1px;
+  float: right;
+  nottext-align: right;
+  notdisplay: inline;
+}

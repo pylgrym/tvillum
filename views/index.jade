@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= item.title
+
+  form(action="prev", class="spanny")
+    button
+      i(class="fa fa-arrow-left fa-2x")
+
+  span #{current}
+
+  form(action="next", class="spanny")
+    button
+      i(class="fa fa-arrow-right fa-2x")
+
+  div(width="100%")
+    each val in comments
+      div(class="unit")
+        div(class="author")  #{val.author}
+        div(class="comment")!= val.comment

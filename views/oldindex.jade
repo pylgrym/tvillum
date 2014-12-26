@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  h1= item.title
+  p Welcome to #{item.title}
+  button #{item.href}
+  button prev
+  button(formaction="http://www.google.com", type="submit") next
+  button #{item.title}  
+  br
+  a(href="prev") Linky-prev
+    &nbsp;
+  a(href="next") Linky-next
+
+  form(action="prev")
+    button prev
+  form(action="next")
+    button next
+
+  i(class="fa fa-camera-retro fa-2x")
+  i(class="fa fa-umbrella fa-2x")
+  br
+  br
+  form(action="prev", class="spanny")
+    button
+      i(class="fa fa-arrow-left fa-2x")
+  span current: #{current}
+  form(action="next", class="spanny")
+    button
+      i(class="fa fa-arrow-right fa-2x")
+  ul
+    each val in comments
+      li
+        div author: #{val.author}
+        div comment: #{val.comment}
+          | some-comment
