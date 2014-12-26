@@ -4,14 +4,18 @@ block content
   h1= item.title
 
   form(action="prev", class="spanny")
-    button
+    button(title="Previous article.")
       i(class="fa fa-arrow-left fa-2x")
 
   span #{current}
 
   form(action="next", class="spanny")
-    button
+    button(title="Next article.")
       i(class="fa fa-arrow-right fa-2x")
+
+  form(action="reset", class="spanny")
+    button(title="Reset - refresh the list of articles.")
+      i(class="fa fa-ambulance fa-2x")
 
   div(width="100%")
     each val in comments

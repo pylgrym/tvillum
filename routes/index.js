@@ -8,56 +8,72 @@ var router = express.Router();
 var current = 1; 
 var subj_list = [];
 
-var options = {
-  host: 'www.reddit.com',
-  path: '/r/wow',
-  port: 80
-};
 
-http.get(options, function(resp) {
-  var body = '';
+function implReset(req,res) {
+  // Clear global variables:
+  console.log("implReset: getting subject list from reddit..");
+  current = 0;    
+  subj_list = [];
 
-  resp.on('data', function(chunk) { body += chunk; });
-  
-  resp.on('end', function() { 
-    console.log('done getting subject list!'); 
-    // console.log(body);
-    var $ = cheerio.load(body);
+  var options = {
+    host: 'www.reddit.com',
+    path: '/r/wow',
+    port: 80
+  };
 
-    // var $out = cheerio.load('<div class="root1"></div>');
+  http.get(options, function(resp) {
+    var body = '';
 
-    $('div.entry').each( function(ix,elm) {
+    resp.on('data', function(chunk) { body += chunk; });
+    
+    resp.on('end', function() { 
+      console.log('done getting subject list!'); 
+      // console.log(body);
+      var $ = cheerio.load(body);
 
-      var a1 = $('a.title', this); // TITLE:
-      var title = a1.text();
+      // var $out = cheerio.load('<div class="root1"></div>');
 
-      var t1 = $('a.comments', this); // COMMENTS LINK:
-      var href = t1.attr('href');
+      $('div.entry').each( function(ix,elm) {
 
-      subj_list.push(
-        { title: title, href: href }
-      );
+        var a1 = $('a.title', this); // TITLE:
+        var title = a1.text();
 
-      /*
-      $out('.root1').append('<div class="unit"></div>');
+        var t1 = $('a.comments', this); // COMMENTS LINK:
+        var href = t1.attr('href');
 
-      $out('.unit').last().append('<div class="author"></div>');
-      $out('.author').last().append(author);
+        subj_list.push(
+          { title: title, href: href }
+        );
 
-      $out('.unit').last().append('<div class="comment"></div>');
-      $out('.comment').last().append(comment);
-      */
+        /*
+        $out('.root1').append('<div class="unit"></div>');
 
+        $out('.unit').last().append('<div class="author"></div>');
+        $out('.author').last().append(author);
+
+        $out('.unit').last().append('<div class="comment"></div>');
+        $out('.comment').last().append(comment);
+        */
+
+      });
+
+      console.log('nr of subj items:' + subj_list.length);
+      if (res) {
+        sharedRender(req,res);
+      } else {
+        console.log('cant render atm');
+      }
     });
 
-    console.log('nr of subj items:' + subj_list.length);
-
+  }).on("error", function(e) {
+    console.log("Got error: " + e.message);
   });
 
-}).on("error", function(e) {
-  console.log("Got error: " + e.message);
-});
+}
 
+
+
+implReset();
 
 
 
@@ -154,5 +170,13 @@ router.get('/prev', function(req, res) {
   sharedRender(req,res);
 });
 
+router.get('/reset', function(req, res) {
+  console.log("trying reset..");
+  current = 0;
+  implReset(req,res);
+  //console.log("reset completed, now trying render..");
+  // We can't do this here:
+  //sharedRender(req,res);
+});
 
 module.exports = router;
