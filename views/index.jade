@@ -7,9 +7,9 @@ block content
     button(title="Previous article.")
       i(class="fa fa-arrow-left fa-2x")
 
-  form(action="/page/#{Number(current2)}", class="spanny",method='get')
-    input(type="text", class="faorm-control", value= current2)
-    button(title="submitt",type="submit") s
+  form(action="/page", class="spanny",method='get')
+    input(type="text", name="current2", value= current2, class="faorm-control")
+    button(type="submit",hidden="true") s
 
   form(action="/page/#{Number(current2)+1}", class="spanny")
     button(title="Next article.")

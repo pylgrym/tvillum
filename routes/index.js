@@ -65,8 +65,19 @@ implReset();
 
 
 
+
+
+
+
 function sharedRender(req,res) {
   var current2 = req.params.id;
+  // If the edit-field-form has new value, it overrides id:
+  var newcurrent = req.query.current2; // req.params.current2;
+  console.log('new:' + newcurrent);
+  if (newcurrent) {
+    current2 = newcurrent;
+  }
+
   if (!current2) { current2 = 0; }
   current2 = Number(current2);
 
@@ -115,8 +126,8 @@ function sharedRender(req,res) {
           comments.push( { author: author, comment: comment} );
         }); // each-loop.
 
-        console.log('current2:' + current2);
-        console.log('subj_list:' + subj_list);
+        console.log('current2 just before render:' + current2);
+        // console.log('subj_list:' + subj_list);
         console.log('length:' + subj_list.length);
         res.render('index', 
           { 
@@ -159,17 +170,22 @@ router.get('/page/:id', function(req, res) {
   sharedRender(req,res);
 });
 
-router.get('/next/:id', function(req, res) {
-  current += 1;
-  if (current >= subj_list.length) { current = 0; }
+router.get('/page', function(req, res) {
+  // For this case, we assume edit-nr-form
   sharedRender(req,res);
 });
 
-router.get('/prev/:id', function(req, res) {
-  current -= 1;
-  if (current < 0) { current = subj_list.length - 1; }
-  sharedRender(req,res);
-});
+// router.get('/next/:id', function(req, res) {
+//   current += 1;
+//   if (current >= subj_list.length) { current = 0; }
+//   sharedRender(req,res);
+// });
+
+// router.get('/prev/:id', function(req, res) {
+//   current -= 1;
+//   if (current < 0) { current = subj_list.length - 1; }
+//   sharedRender(req,res);
+// });
 
 router.get('/reset', function(req, res) {
   console.log("trying reset..");
