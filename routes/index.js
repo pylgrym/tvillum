@@ -5,14 +5,13 @@ var url = require('url');
 
 var router = express.Router();
 
-var current = 1; 
+// var current = 1; 
 var subj_list = [];
 
 
 function implReset(req,res) {
   // Clear global variables:
   console.log("implReset: getting subject list from reddit..");
-  current = 0;    
   subj_list = [];
 
   var options = {
@@ -69,7 +68,7 @@ function implReset(req,res) {
     console.log("Got error: " + e.message);
   });
 
-}
+} // end implreset.
 
 
 
@@ -78,11 +77,16 @@ implReset();
 
 
 function sharedRender(req,res) {
-  if (!subj_list[current]) {
+  var current2 = req.params.id;
+  if (!current2) { current2 = 0; }
+  current2 = Number(current2);
+
+  if (!subj_list[current2]) {
     res.render('error');  // todo - we should render something that says 'still loading'.
   }
 
-  var sUrl = subj_list[current].href;
+  console.log('current2:' + current2);
+  var sUrl = subj_list[current2].href;
   var itemUrl = url.parse(sUrl);
 
   var options = {
@@ -92,10 +96,10 @@ function sharedRender(req,res) {
   };
 
   
-  function makeMyFunction(req,res) {
+  function makeMyFunction(req,res, current2) {
     console.log('making my function..');
 
-    function anon(resp) {
+    function anon(resp, current2) {
       var body = '';
       console.log('arriving in anon..');
 
@@ -124,8 +128,8 @@ function sharedRender(req,res) {
 
         res.render('index', 
           { 
-            item: subj_list[current], 
-            current: current,
+            item: subj_list[current2], 
+            current2: current2,
             comments: comments
           }
         );  
@@ -140,14 +144,14 @@ function sharedRender(req,res) {
   } 
 
   console.log('trying to get my function..');
-  myClosure = makeMyFunction(req,res);
+  myClosure = makeMyFunction(req,res,current2);
   console.log('gotten function..');
 
   // I need req,res in there..
   console.log('passing function to http-get..');
   http.get(options, myClosure); // http.get.
 
-}
+} // end sharedRender.
 
 
 
@@ -158,13 +162,17 @@ router.get('/', function(req, res) {
   sharedRender(req,res);
 });
 
-router.get('/next', function(req, res) {
+router.get('/page/:id', function(req, res) {
+  sharedRender(req,res);
+});
+
+router.get('/next/:id', function(req, res) {
   current += 1;
   if (current >= subj_list.length) { current = 0; }
   sharedRender(req,res);
 });
 
-router.get('/prev', function(req, res) {
+router.get('/prev/:id', function(req, res) {
   current -= 1;
   if (current < 0) { current = subj_list.length - 1; }
   sharedRender(req,res);
