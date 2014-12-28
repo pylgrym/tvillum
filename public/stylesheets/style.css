@@ -17,12 +17,13 @@ form.spanny {
 .unit { zbackground-color: yellow;  padding: 5px;
 }
 
-p::not-first-letter { background-color: lime; color: blue; font-weight: 900; 
+p::first-letter { background-color: lime; color: blue; font-weight: 900; 
   font-size: 1.5em; 
 }
 
-p { display: inline; 
+p { daispalay: inline; 
   notinline-block; 
+  font-family: 'Open Sans', sans-serif;
 }
 
 .comment { zmargin: 3px; 
