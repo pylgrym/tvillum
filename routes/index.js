@@ -12,7 +12,10 @@ var subj_list = [];
 function implReset(req,res) {
   // Clear global variables:
   console.log("implReset: getting subject list from reddit..");
-  subj_list = [];
+  // a placeholder until we've retrieved the list..
+  subj_list = [
+    { title: "still reading subjects..", href: "www.google.com" }
+  ];
 
   var options = {
     host: 'www.reddit.com',
@@ -26,42 +29,28 @@ function implReset(req,res) {
     resp.on('data', function(chunk) { body += chunk; });
     
     resp.on('end', function() { 
-      console.log('done getting subject list!'); 
-      // console.log(body);
+      console.log('done getting subject list! now scanning it.'); 
+      var subj_list_tmp = [];
+
       var $ = cheerio.load(body);
-
-      // var $out = cheerio.load('<div class="root1"></div>');
-
-      $('div.entry').each( function(ix,elm) {
-
-        var a1 = $('a.title', this); // TITLE:
-        var title = a1.text();
-
-        var t1 = $('a.comments', this); // COMMENTS LINK:
-        var href = t1.attr('href');
-
-        subj_list.push(
-          { title: title, href: href }
-        );
-
-        /*
-        $out('.root1').append('<div class="unit"></div>');
-
-        $out('.unit').last().append('<div class="author"></div>');
-        $out('.author').last().append(author);
-
-        $out('.unit').last().append('<div class="comment"></div>');
-        $out('.comment').last().append(comment);
-        */
-
+      $('div.entry').each( function(ix,elm) {        
+        subj_list_tmp.push({ 
+          title: $('a.title', this).text(), 
+          href:  $('a.comments', this).attr('href')
+        });
       });
 
+      // Now substitute the completed list:
+      subj_list = subj_list_tmp;
       console.log('nr of subj items:' + subj_list.length);
+
       if (res) {
         sharedRender(req,res);
       } else {
         console.log('cant render atm');
       }
+      console.log("implReset callback has finished.");
+      console.log(" "); // spacing.
     });
 
   }).on("error", function(e) {
@@ -97,19 +86,19 @@ function sharedRender(req,res) {
 
   
   function makeMyFunction(req,res, current2) {
-    console.log('making my function..');
+    console.log('making my function.., cur2 was:' + current2);
 
-    function anon(resp, current2) {
+    function anon(resp) { // , current2) {
       var body = '';
-      console.log('arriving in anon..');
+      console.log('arriving in anon.., cur2 was:' + current2);
 
       resp.on('data', function(chunk) { 
-        console.log('getting chunks..');
+        // console.log('getting chunks..');
         body += chunk; 
       }); 
 
       resp.on('end', function() { 
-        console.log('got article!'); 
+        console.log('got article!, cur2 was:' + current2); 
         var $ = cheerio.load(body);
         var comments = [];
 
@@ -126,6 +115,9 @@ function sharedRender(req,res) {
           comments.push( { author: author, comment: comment} );
         }); // each-loop.
 
+        console.log('current2:' + current2);
+        console.log('subj_list:' + subj_list);
+        console.log('length:' + subj_list.length);
         res.render('index', 
           { 
             item: subj_list[current2], 
@@ -140,10 +132,10 @@ function sharedRender(req,res) {
     } // anon-f.
 
     console.log('returning my function.');
-    return anon;
-  } 
+    return anon; // in makeMyFunction.
+  } // end makeMyFunction.
 
-  console.log('trying to get my function..');
+  console.log('trying to get my function.., cur2 was:' + current2);
   myClosure = makeMyFunction(req,res,current2);
   console.log('gotten function..');
 
@@ -159,6 +151,7 @@ function sharedRender(req,res) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
+  console.log("handler for / root");
   sharedRender(req,res);
 });
 
