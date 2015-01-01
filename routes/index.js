@@ -69,24 +69,23 @@ implReset();
 
 
 
-function sharedRender(req,res) {
-  var current2 = req.params.id;
-  // If the edit-field-form has new value, it overrides id:
-  var newcurrent = req.query.current2; // req.params.current2;
-  console.log('new:' + newcurrent);
-  if (newcurrent) {
-    current2 = newcurrent;
+function sharedRender(req,res, fromUrl, fromForm) {
+  var curPage_pa; // Just 'pa_rameter'.
+
+  if (fromUrl) { // If page-nr is specified in URL, it wins:
+    curPage_pa = fromUrl;
+  } else {
+    curPage_pa = fromForm;
   }
 
-  if (!current2) { current2 = 0; }
-  current2 = Number(current2);
+  curPage_pa = Number(curPage_pa); // We do this to make +1, -1 work.
 
-  if (!subj_list[current2]) {
+  if (!subj_list[curPage_pa]) {
     res.render('error');  // todo - we should render something that says 'still loading'.
   }
 
-  console.log('current2:' + current2);
-  var sUrl = subj_list[current2].href;
+  console.log('curPage:' + curPage_pa);
+  var sUrl = subj_list[curPage_pa].href;
   var itemUrl = url.parse(sUrl);
 
   var options = {
@@ -96,20 +95,19 @@ function sharedRender(req,res) {
   };
 
   
-  function makeMyFunction(req,res, current2) {
-    console.log('making my function.., cur2 was:' + current2);
+  function makeMyFunction(req,res, curPage_cl) {
+    console.log('making my function..'); //, cur was:' + curPage);
+    // JG: the only purpose of 'makemyfunction' is to provide a scope for function 'anon',
+    // where it can see the original parameter '..cl' (closure).
 
-    function anon(resp) { // , current2) {
+    function anon(resp) { // (Is in scope of makeMyFunction, and can see parameter curPage_cl.)
       var body = '';
-      console.log('arriving in anon.., cur2 was:' + current2);
+      console.log('arriving in anon..'); //, cur2 was:' + curPage_cl);
 
-      resp.on('data', function(chunk) { 
-        // console.log('getting chunks..');
-        body += chunk; 
-      }); 
+      resp.on('data', function(chunk) { body += chunk; }); 
 
       resp.on('end', function() { 
-        console.log('got article!, cur2 was:' + current2); 
+        console.log('got article!'); //, cur2 was:' + curPage); 
         var $ = cheerio.load(body);
         var comments = [];
 
@@ -126,28 +124,26 @@ function sharedRender(req,res) {
           comments.push( { author: author, comment: comment} );
         }); // each-loop.
 
-        console.log('current2 just before render:' + current2);
-        // console.log('subj_list:' + subj_list);
+        //console.log('curPage just before render:' + curPage);
         console.log('length:' + subj_list.length);
         res.render('index', 
           { 
-            item: subj_list[current2], 
-            current2: current2,
+            item: subj_list[curPage_cl], 
+            curPage_jd: curPage_cl,
             comments: comments
           }
         );  
 
       }); // resp-end.    
 
-      // res.render('index', { item: subj_list[current], current: current });  
     } // anon-f.
 
     console.log('returning my function.');
     return anon; // in makeMyFunction.
   } // end makeMyFunction.
 
-  console.log('trying to get my function.., cur2 was:' + current2);
-  myClosure = makeMyFunction(req,res,current2);
+  console.log('trying to get my function..'); //, cur2 was:' + curPage);
+  myClosure = makeMyFunction(req,res,curPage_pa);
   console.log('gotten function..');
 
   // I need req,res in there..
@@ -162,38 +158,23 @@ function sharedRender(req,res) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  console.log("handler for / root");
-  sharedRender(req,res);
+  sharedRender(req, res, 0, null);
 });
 
-router.get('/page/:id', function(req, res) {
-  sharedRender(req,res);
+router.get('/page/:id', function(req, res) { // REST style query, page nr is in url path:
+  sharedRender(req, res, req.params.id, null);
 });
 
-router.get('/page', function(req, res) {
-  // For this case, we assume edit-nr-form
-  sharedRender(req,res);
+router.get('/page', function(req, res) { // req.querystring.
+  sharedRender(req, res, null, req.query.curPage_fm);  // For this case, we assume edit-nr-form
 });
 
-// router.get('/next/:id', function(req, res) {
-//   current += 1;
-//   if (current >= subj_list.length) { current = 0; }
-//   sharedRender(req,res);
-// });
-
-// router.get('/prev/:id', function(req, res) {
-//   current -= 1;
-//   if (current < 0) { current = subj_list.length - 1; }
-//   sharedRender(req,res);
-// });
 
 router.get('/reset', function(req, res) {
   console.log("trying reset..");
   current = 0;
   implReset(req,res);
-  //console.log("reset completed, now trying render..");
-  // We can't do this here:
-  //sharedRender(req,res);
+  console.log("reset completed..");
 });
 
 module.exports = router;

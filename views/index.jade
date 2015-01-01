@@ -1,26 +1,32 @@
 extends layout
 
 block content
-  h1= item.title
 
-  form(action="/page/#{Number(current2)-1}", class="spanny")
-    button(title="Previous article.")
+  form(class="form")
+    // Apparently works because it's first submit button/first button..
+    button(formaction="/page", type="submit", hidden) 
+    // hidden submit button may be bad for browsers.
+
+    button(type="submit", class="btn btn-info btn-sm quart", formaction="/page/#{Number(curPage_jd)-1}", title="Previous.")
       i(class="fa fa-arrow-left fa-2x")
 
-  form(action="/page", class="spanny",method='get')
-    input(type="text", name="current2", value= current2, class="faorm-control")
-    button(type="submit",hidden="true") s
+    input(type="text", name="curPage_fm", value= curPage_jd, class="form-control quart", style="display:inline")
 
-  form(action="/page/#{Number(current2)+1}", class="spanny")
-    button(title="Next article.")
+    button(autofocus, type="submit", class="btn btn-warning btn-sm quart", formaction="/page/#{Number(curPage_jd)+1}", title="Next.")
       i(class="fa fa-arrow-right fa-2x")
 
-  form(action="reset", class="spanny")
-    button(title="Reset - refresh the list of articles.")
+    button(type="submit", class="btn btn-sm  quart" formaction="reset", title="Reset - refresh the list of articles.")
       i(class="fa fa-ambulance fa-2x")
+
+
+  h2= item.title
 
   div(width="100%")
     each val in comments
       div(class="unit")
         div(class="author")  #{val.author}
         div(class="comment")!= val.comment
+
+
+// , formmethod='get', 
+// button type = 'button' is no good, since it requires javascript clientside to have any effect instead.
