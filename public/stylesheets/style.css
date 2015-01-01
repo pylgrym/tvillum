@@ -1,8 +1,41 @@
+
 body {
   not-padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: grey;
+  zfont: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: lightyellow;
 }
+
+.flex { display: flex; justify-content: space-between; }
+
+.signin-block { text-align: right;  }
+.signin-status {  font-size: 0.7em; margin-right: 5px; }
+
+.unauthenticated { background-color: red;   color: white; display: inline; }
+.authenticated   { zbackground-color: blue; color: blue;  display: block; } // may not be 'block'.
+.the-user { color: white; font-weight: 900; }
+
+.hor-center {  not-background-color: white; }
+
+table { margin: 0 auto;  zbackground-color: yellow; }
+
+th { text-align: right; }
+
+td { padding-bottom: 0.3em; }
+td { padding-left: 0.3em; }
+
+.error   { color: red;  font-weight: 900; no-background-color: white; }
+.warning { color: blue;                   no-background-color: white; }
+
+
+.btn-custom { background-color: hsl(129, 100%, 16%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#00f424", endColorstr="#00510c"); background-image: -khtml-gradient(linear, left top, left bottom, from(#00f424), to(#00510c)); background-image: -moz-linear-gradient(top, #00f424, #00510c); background-image: -ms-linear-gradient(top, #00f424, #00510c); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #00f424), color-stop(100%, #00510c)); background-image: -webkit-linear-gradient(top, #00f424, #00510c); background-image: -o-linear-gradient(top, #00f424, #00510c); background-image: linear-gradient(#00f424, #00510c); border-color: #00510c #00510c hsl(129, 100%, 8%); color: #fff !important; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.52); -webkit-font-smoothing: antialiased; }
+
+// http://charliepark.org/bootstrap_buttons/
+
+
+
+
+
+/// reddit-wow css-styles:
 
 .quart { width: 24%; }
 

@@ -1,0 +1,46 @@
+extends layout
+
+block content
+
+  div(class="flex")
+    div
+    h1(class="hor-center") Login
+    div(class="signin-block")
+      span(class="signin-status unauthenticated") not signed in.
+      span(class="signin-status authenticated") signed in as:
+        span(class="the-user") john@gmail.com
+
+  br
+
+  form
+    table
+      tr
+        th
+          label email:
+        td
+          input(class="narrow form-control", id="username",name="username", value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete,required)
+
+      tr
+        th
+          label password: 
+        td 
+          input(class="narrow form-control",id="password",name="password",type="password")
+
+      tr
+        th
+        td
+          span(class="error") Wrong password or email address.
+          div(class="warning") Account doesn't exist.
+          div(class="warning") Repeat password to create account:
+
+      tr
+        th
+          label password: 
+        td 
+          input(type="password",class="narrow form-control")
+      tr
+        th
+        td 
+          button(class="btn btn-custom") Create
+
+
