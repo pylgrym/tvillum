@@ -14,47 +14,65 @@ block content
 
   br
 
+  // (action="") a form with no action goes to same url.
   form
     table
-      tr
+      // Tablerow for user name field.
+      tr 
         th
           label email:
         td
-          input(class="form-control", id="username",name="username", value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete,required)
+          input.form-control(name="username", id="username",value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete, required)
 
-      tr
+      // Tablerow for password field.
+      tr 
         th
           label password: 
         td 
-          input(class="form-control", id="password", name="password", type="password")
+          input.form-control(name="password", id="password", value= password, type="password", autocomplete, required)
 
-      tr
+      // Tablerow for validation errors.
+      tr 
         th
         td
-          span(class="error") Wrong password or email address.
-          div(class="warning") Account doesn't exist.
-          div(class="warning") Repeat password to create account:
+          if badLogin == 1
+            span.error Wrong password or email address.
+
+          if unknownLogin == 1
+            div.warning Account doesn't exist.
+            div.warning Repeat password to create account:
+
+      // Conditional tablerow for create-new-account.
+      if unknownLogin == 1
+        tr
+          th
+            label password: 
+          td 
+            input.form-control(name="password2", type="password", id="password2")
+        tr
+          th
+          td 
+            button.btn.btn-custom Create
+
 
       tr
-        th
-          label password: 
-        td 
-          input(type="password", id="password2", name="password2", class="form-control")
-      tr
-        th
-        td 
-          button(class="btn btn-custom") Create
+        th .
 
+      // Diagnostics/test tablerow.
       tr
         th
           label signin-test:
         td
           input(class="form-control", id="login",name="loggedIn", value= loggedIn, type="text", placeholder="<1>")
+    // Table ended here.
+    
+    // Default form submit-button:      
+    input(type="submit", hidden)
 
 
-  div user: #{username}
-  div pwd: #{password}
-  div online? #{loggedIn}
+  // div user: #{username}
+  // div pwd: #{password}
+  // div online? #{loggedIn}
 
 
 
