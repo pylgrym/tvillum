@@ -158,22 +158,36 @@ function sharedRender(req,res, fromUrl, fromForm) {
 
 
 
+function restrict(req, res, next) {
+  if (req.session.loggedInUser) {
+    next();
+  } else {
+    console.log('restrict: no loggedInUser on session?');
+    req.session.error = 'Access denied!';
+    res.redirect('/users');
+  }
+}
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', restrict, function(req, res) {
   sharedRender(req, res, 0, null);
 });
 
-router.get('/page/:id', function(req, res) { // REST style query, page nr is in url path:
+router.get('/page/:id', restrict, function(req, res) { // REST style query, page nr is in url path:
   sharedRender(req, res, req.params.id, null);
 });
 
-router.get('/page', function(req, res) { // req.querystring.
+router.get('/page', restrict, function(req, res) { // req.querystring.
   sharedRender(req, res, null, req.query.curPage_fm);  // For this case, we assume edit-nr-form
 });
 
+router.get('/quit', restrict, function(req, res) {
+  req.session.loggedInUser = null; // Not strictly necessary, since /users login will clear it on start.
+  res.redirect('/users');
+});
 
-router.get('/reset', function(req, res) {
+
+router.get('/reset', restrict, function(req, res) {
   console.log("trying reset..");
   current = 0;
   implReset(req,res);

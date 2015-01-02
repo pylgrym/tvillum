@@ -4,7 +4,7 @@ var router = express.Router();
 
 var localAccountList = {
   'a@a.com': { password: 'abcd'},
-  'b@b.com': { password: 'bcde'}
+  'j@j.com': { password: 'asdf'}
 }
 
 function findAccount(email) {
@@ -34,6 +34,8 @@ router.get('/', function(req, res) {
 
   if (!req.query.username || !req.query.password) {
     console.log('no uname or no pwd.'); // fall-through to render below.
+    console.log('req.query.username:['+req.query.username+']');
+    console.log('req.query.password:['+req.query.password+']');
   } else { // We have both username and a non-empty password.
     var account = findAccount(req.query.username);
     if (!account) {

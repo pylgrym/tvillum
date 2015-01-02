@@ -27,7 +27,8 @@ html
           span.signin-status.authenticated signed in as:
             span(class="the-user") #{loggedInUser} 
             br  
-            button.btn.btn-xs quit
+            form
+              button.btn.btn-xs(formaction="/quit") quit
 
 
     block content
