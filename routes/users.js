@@ -4,14 +4,14 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/', function(req, res) {
   console.log('user route');
+  // params, we'd get from the path.
+  //console.log('user', req.params.username);
+  console.log('user', req.query.username);
   res.render('users', 
     { 
-      username: 'john@funnyfield.com',
-      password: '***not',
-      loggedIn: false
-      //item: subj_list[curPage_cl], 
-      //curPage_jd: curPage_cl,
-      //comments: comments
+      username: req.query.username,
+      password: req.query.password,
+      loggedIn: req.query.loggedIn
     }
   );  
 

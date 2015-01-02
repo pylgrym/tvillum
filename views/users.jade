@@ -2,13 +2,15 @@ extends layout
 
 block content
 
-  div(class="flex")
+  div.flex
     div
-    h1(class="hor-center") Login
-    div(class="signin-block")
-      span(class="signin-status unauthenticated") not signed in.
-      span(class="signin-status authenticated") signed in as:
-        span(class="the-user") john@gmail.com
+    h1.hor-center Login
+    div.signin-block
+      if loggedIn == 0
+        span.signin-status.unauthenticated not signed in.
+      if loggedIn == 1
+        span.signin-status.authenticated signed in as:
+          span(class="the-user")= username
 
   br
 
@@ -18,13 +20,13 @@ block content
         th
           label email:
         td
-          input(class="narrow form-control", id="username",name="username", value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete,required)
+          input(class="form-control", id="username",name="username", value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete,required)
 
       tr
         th
           label password: 
         td 
-          input(class="narrow form-control",id="password",name="password",type="password")
+          input(class="form-control", id="password", name="password", type="password")
 
       tr
         th
@@ -37,10 +39,23 @@ block content
         th
           label password: 
         td 
-          input(type="password",class="narrow form-control")
+          input(type="password", id="password2", name="password2", class="form-control")
       tr
         th
         td 
           button(class="btn btn-custom") Create
+
+      tr
+        th
+          label signin-test:
+        td
+          input(class="form-control", id="login",name="loggedIn", value= loggedIn, type="text", placeholder="<1>")
+
+
+  div user: #{username}
+  div pwd: #{password}
+  div online? #{loggedIn}
+
+
 
 
