@@ -15,14 +15,14 @@ block content
         th
           label email:
         td
-          input.form-control(name="username", id="username",value= username, type="text", placeholder="<your@email.com>", autofocus, autocomplete, required)
+          input.form-control(name="username", id="username",value= username, autofocus = (!unknownLogin && !accountCreationOK), type="text", placeholder="<your@email.com>", autocomplete, required)
 
       // Tablerow for password field.
       tr 
         th
           label password: 
         td 
-          input.form-control(name="password", id="password", value= password, type="password", autocomplete, required)
+          input.form-control(name="password", id="password", value= password, autofocus = (accountCreationOK && !unknownLogin), type="password", autocomplete, required)
 
       // Tablerow for validation errors.
       tr 
@@ -30,6 +30,16 @@ block content
         td
           if badLogin == 1
             span.error Wrong password or email address.
+
+          if accountCreationFailed == 1
+            span.error Account creation failed: Mismatched passwords.
+
+          if accountCreationOK == 1
+            span.success Account creation succeeded!
+            br 
+            span.success Welcome, doctor #{username}
+            br
+            span.warning Now log into your new account.
 
           if unknownLogin == 1
             div.warning Account doesn't exist.
@@ -41,7 +51,7 @@ block content
           th
             label password: 
           td 
-            input.form-control(name="password2", type="password", id="password2")
+            input.form-control(name="password2", autofocus = unknownLogin, type="password", id="password2")
         tr
           th
           td 
@@ -49,24 +59,21 @@ block content
 
 
       tr
-        th .
+        th()
 
       // Diagnostics/test tablerow.
-      tr
-        th
-          label signin-test:
-        td
-          input(class="form-control", id="login",name="loggedIn", value= loggedIn, type="text", placeholder="<1>")
+        tr
+          th
+            label signin-test:
+          td
+            input(class="form-control", id="login",name="loggedIn", value= loggedIn, type="text", placeholder="<1>")
     // Table ended here.
     
     // Default form submit-button:      
     input(type="submit", hidden)
 
 
-  // div user: #{username}
-  // div pwd: #{password}
-  // div online? #{loggedIn}
-
+ 
 
 
 

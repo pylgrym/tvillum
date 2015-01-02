@@ -126,11 +126,14 @@ function sharedRender(req,res, fromUrl, fromForm) {
 
         //console.log('curPage just before render:' + curPage);
         console.log('length:' + subj_list.length);
+
         res.render('index', 
           { 
             item: subj_list[curPage_cl], 
             curPage_jd: curPage_cl,
-            comments: comments
+            comments: comments,
+            loggedIn: (req.session ? (req.session.loggedInUser ? 1:0) : 0), // (req.query.loggedIn==1),
+            loggedInUser: (req.session ? (req.session.loggedInUser || 'no user in session') : 'no session')
           }
         );  
 
