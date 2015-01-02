@@ -3,14 +3,7 @@ extends layout
 block content
 
   div.flex
-    div
     h1.hor-center Login
-    div.signin-block
-      if loggedIn == 0
-        span.signin-status.unauthenticated not signed in.
-      if loggedIn == 1
-        span.signin-status.authenticated signed in as:
-          span(class="the-user")= username
 
   br
 

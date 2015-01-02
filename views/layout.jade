@@ -3,19 +3,29 @@ html
   head
     title= title
 
+    // Bootstrap stuff
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css")    
-    // link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css")
-
-    link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
-
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css")
+    // script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
 
     script(src='/javascripts/js1.js')
-    // script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
 
     meta(name="viewport", id="theviewport", content="width=device-width, initial-scale=1")
 
+    link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
     link(href='http://fonts.googleapis.com/css?family=Open+Sans', rel='stylesheet', type='text/css')
     
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+
+
+    div.flex
+      div.signin-block
+        if loggedIn == 0
+          span.signin-status.unauthenticated not signed in.
+        if loggedIn == 1
+          span.signin-status.authenticated signed in as:
+            span(class="the-user")= username
+
+
     block content

@@ -7,14 +7,17 @@ body {
 
 .flex { display: flex; justify-content: space-between; }
 
-.signin-block { text-align: right;  }
-.signin-status {  font-size: 0.7em; margin-right: 5px; }
+.signin-block { text-align: right; flex: 1 1 auto; not-background-color: lime; }
+.signin-status {  font-size: 0.7em; 
+  position: absolute;
+  top: 3px; right: 3px;
+}
 
 .unauthenticated { background-color: red;   color: white; }
 .authenticated   { zbackground-color: blue; color: blue;  } 
 .the-user { font-weight: 700; }
 
-.hor-center {  not-background-color: white; }
+.hor-center {  not-background-color: white; text-align: center; flex: 1 1 auto; }
 
 table { margin: 0 auto; }
 
