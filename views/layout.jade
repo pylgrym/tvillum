@@ -24,11 +24,13 @@ html
         if loggedIn == 0
           span.signin-status.unauthenticated not signed in.
         else 
-          span.signin-status.authenticated signed in as:
-            span(class="the-user") #{loggedInUser} 
+          span.signin-status.authenticated(title="as: #{loggedInUser}") signed in. *
             br  
             form
               button.btn.btn-xs(formaction="/quit") quit
+
+            // 
+              span(class="the-user") #{loggedInUser} 
 
 
     block content
