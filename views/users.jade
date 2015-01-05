@@ -15,7 +15,7 @@ block content
         th
           label email:
         td
-          input.form-control(name="username", id="username",value= username, autofocus = (!unknownLogin && !accountCreationOK), type="text", placeholder="<your@email.com>", autocomplete, required)
+          input.form-control(name="username", id="username",value= username, autofocus = (!unknownLogin && !accountCreationOK), type="email", placeholder="<your@email.com>", autocomplete, required)
 
       // Tablerow for password field.
       tr 
@@ -61,18 +61,12 @@ block content
       tr
         th()
 
-      // Diagnostics/test tablerow.
-        tr
-          th
-            label signin-test:
-          td
-            input(class="form-control", id="login",name="loggedIn", value= loggedIn, type="text", placeholder="<1>")
     // Table ended here.
     
     // Default form submit-button:      
-    input(type="submit", hidden)
-    input(type="submit") extra-submit
-    input(type="submit", visibility=hidden) another-submit
+    // input(type="submit", hidden)
+    input.will-be-hidden(type="submit") 
+    // input(type="submit", value="extra-submit") 
 
 
  
