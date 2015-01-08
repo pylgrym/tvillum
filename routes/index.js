@@ -17,9 +17,11 @@ function implReset(req,res) {
     { title: "still reading subjects..", href: "www.google.com" }
   ];
 
+  //  path: '/r/wow',
+
   var options = {
     host: 'www.reddit.com',
-    path: '/r/wow',
+    path: '/r/oculus',
     port: 80
   };
 
